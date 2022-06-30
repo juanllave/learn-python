@@ -1,7 +1,7 @@
 import random
 from enum import IntEnum
 
-#Defins the classes and names for the game.
+#Defines the classes and names for the game.
 class Action(IntEnum):
     Rock = 0
     Paper = 1
@@ -32,7 +32,7 @@ def get_computer_selection():
         action = Action(selection)
         return action    
 
-#Determine the winner and loser of the game.
+#Determine the winner and loser of each game.
 def determine_winner(user_action, computer_action):
     defeats = victories[user_action]
     if user_action == computer_action:

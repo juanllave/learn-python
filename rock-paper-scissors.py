@@ -1,14 +1,24 @@
 import random
 from enum import IntEnum
 
-#Defines the condition to allow continous playing.
-#while True:
-#Ask the user to maKe a selection after defining the possible actions.
+#Defins the classes and names for the game.
 class Action(IntEnum):
     Rock = 0
     Paper = 1
     Scissors = 2
-        
+    Lizard = 3
+    Spock = 4
+
+#Establish the winning-losing relations between classes.
+victories = {
+        Action.Scissors: [Action.Lizard, Action.Paper],
+        Action.Paper: [Action.Spock, Action.Rock],
+        Action.Rock: [Action.Lizard, Action.Scissors],
+        Action.Lizard: [Action.Spock, Action.Paper],
+        Action.Spock: [Action.Scissors, Action.Rock]
+    }
+
+#Get the user selection.     
 def get_user_selection():
     choices = [f'{action.name}[{action.value}]' for action in Action]
     choices_str = ', '.join(choices)
@@ -16,32 +26,23 @@ def get_user_selection():
     action = Action(selection)
     return action
 
-#Establish the computer's options. Select one at random.
+#Chose the computer selection at random.
 def get_computer_selection():
         selection = random.randint(0, len(Action) - 1)
         action = Action(selection)
         return action    
 
-#Print the choices of both players.
+#Determine the winner and loser of the game.
 def determine_winner(user_action, computer_action):
+    defeats = victories[user_action]
     if user_action == computer_action:
         print(f'Both players selected {user_action.name}. It\'s a tie')
-    elif user_action == Action.Rock:
-        if computer_action == Action.Scissors:
-            print('Rock smashes scissors. You win! :D')
-        else:
-            print('Paper covers rock. You lose :(')
-    elif user_action == Action.Paper:
-        if computer_action == Action.Rock:
-            print('Paper covers rock. You win! :D')
-        else:
-            print('Scissors cut paper. You lose :(')
-    elif user_action == Action.Scissors:
-        if computer_action == Action.Paper:
-            print('Scissors cut paper. You win! :D')
-        else:
-            print('Rock smashes scissors. You lose :(')
+    elif computer_action in defeats:
+        print(f'{user_action.name} beats {computer_action.name}. You win! :D')
+    else:
+        print(f'{computer_action.name} beats {user_action.name}. You lose :(')
 
+#Create the loop to repeat the game.
 while True:
     try:
         user_action = get_user_selection()
